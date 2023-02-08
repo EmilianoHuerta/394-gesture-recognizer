@@ -334,6 +334,10 @@ public class Recognizer {
         score = 1 - score / (Math.sqrt(0.5) * SIZE);
         finalScore.put(bestTemplate, score); 
         return finalScore;
-    } 
+    }
+
+    public HashMap<String, Deque<Point>> getTemplateList() {
+        return templates;
+    }
 
 }
