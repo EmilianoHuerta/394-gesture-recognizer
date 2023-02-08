@@ -317,9 +317,15 @@ public class Recognizer {
     public HashMap<String, Double> bestTemplate(Deque<Point> points){
 
         points = sampledTemplate(points);
+
+
         double score = Double.MAX_VALUE; 
         double currentScore = 0;
         String bestTemplate = ""; 
+        if (templates.isEmpty()) {
+            return null;
+        }
+        
         for(Map.Entry<String, Deque<Point>> templateElement: templates.entrySet()){
             String key = templateElement.getKey();
             Deque<Point> dequeValue = templateElement.getValue(); 
@@ -331,7 +337,7 @@ public class Recognizer {
             }
         }
         HashMap<String, Double> finalScore = new HashMap<String, Double>(); 
-        score = 1 - score / (Math.sqrt(0.5) * SIZE);
+        score = 1 - (score / (Math.sqrt(0.5) * SIZE));
         finalScore.put(bestTemplate, score); 
         return finalScore;
     } 

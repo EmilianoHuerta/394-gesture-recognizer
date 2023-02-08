@@ -104,13 +104,14 @@ public class GestureApp {
      */
     public void mouseReleased(MouseButtonEvent event){
         HashMap<String, Double> stringName = recognizer.bestTemplate(path);
-         String key = "";
-         double dequeValue = 0; 
+        String key = "";
+        double dequeValue = 0; 
         for(Entry<String, Double> templateElement: stringName.entrySet()){
             key = templateElement.getKey();
             dequeValue = templateElement.getValue(); 
         }
         matchLabel.setText("Match: " + key + " " + dequeValue);
+
     }
 
     /**
@@ -134,6 +135,7 @@ public class GestureApp {
         if(path.size() > 0){
             recognizer.addTemplate(name, path); // Add the points stored in the path as a template
         }  
+        removeAllNonUIGraphicsObjects();
     }
 
     /**
@@ -150,7 +152,7 @@ public class GestureApp {
             Deque<Point> points = ioManager.loadGesture(name+".xml");
             if (points != null){
                 recognizer.addTemplate(name, points);
-                System.out.println("Loaded "+name);
+                System.out.println("Loaded "+ name);
             }
         }
         else if (ch.equals('s')){
