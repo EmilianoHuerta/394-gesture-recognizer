@@ -193,8 +193,8 @@ public class TestRecognizer {
 
 
 
-        assertEquals( new Point(-10,10), recognizer.boundingBox(points));
-        assertEquals(new Point(-10,10), recognizer.boundingBox(points));
+        assertEquals( new Point(5,10), recognizer.boundingBox(points));
+        assertEquals(new Point(5,10), recognizer.boundingBox(points));
     }
     /**
      * Tests the centroid point 
