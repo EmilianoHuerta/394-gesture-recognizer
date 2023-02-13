@@ -1,16 +1,11 @@
 package comp128.gestureRecognizer;
 
 import edu.macalester.graphics.*;
-import edu.macalester.graphics.Point;
-import edu.macalester.graphics.events.MouseButtonEvent;
-import edu.macalester.graphics.events.MouseMotionEvent;
 import edu.macalester.graphics.ui.Button;
 import edu.macalester.graphics.ui.TextField;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 /**
@@ -27,9 +22,12 @@ public class GestureApp {
     private TextField templateNameField;
     private GraphicsText matchLabel;
     private Deque<Point> path;
+    private GraphicsGroup drawingLayer;
 
     public GestureApp(){
         canvas = new CanvasWindow("Gesture Recognizer", 600, 600);
+        drawingLayer = new GraphicsGroup();
+        canvas.add(drawingLayer);
         recognizer = new Recognizer();
         path = new ArrayDeque<>();
         ioManager = new IOManager();
@@ -63,64 +61,31 @@ public class GestureApp {
         Consumer<Character> handleKeyCommand = ch -> keyTyped(ch);
         canvas.onCharacterTyped(handleKeyCommand);
 
-        canvas.onMouseDown(this::mousePressed);
-        canvas.onDrag(this::mouseDragged);
-        canvas.onMouseUp(this::mouseReleased);
+        //TODO: Add mouse listeners to allow the user to draw and add the points to the path variable.
+        canvas.onMouseDown((e)-> {
+            path = new ArrayDeque<>();
+            drawingLayer.removeAll();
+            path.add(e.getPosition());
+            drawingLayer.add(new Line(e.getPosition().getX(), e.getPosition().getY(), e.getPosition().getX(), e.getPosition().getY()));
+        });
 
+        canvas.onDrag((e)-> {
+            draw(e.getPosition());
+            path.add(e.getPosition());
+        });
+
+        canvas.onMouseUp((e)->{
+            if(recognizer.getTemplates().size()!=0 && path.size()>1){
+                BestMatch bestMatch = recognizer.recognize(path);
+                matchLabel.setText("Match: " + bestMatch.toString());
+            }
+        });
     }
 
-    /**
-     * This method monitors the press function of the mouse, draws a line with what the user wishes to draw 
-     * @param event
-     */
-    public void mousePressed(MouseButtonEvent event){
-        removeAllNonUIGraphicsObjects();
-        Point position = event.getPosition();
-        path.add(position); 
-        double lineX = position.getX(); 
-        double lineY = position.getY();
-
-
-        Line newLine = new Line(lineX, lineY, position.getX(), position.getY());
-        canvas.add(newLine); 
-    }
-    /**
-     * This method monitors the drag function of the mouse 
-     * @param event
-     */
-    public void mouseDragged(MouseMotionEvent event){
-
-        Line newLine = new Line(path.getLast().getX(), path.getLast().getY(), event.getPosition().getX(), event.getPosition().getY()); 
-        
-        Point position = event.getPosition();
+    private void draw(Point position){
+        Line line = new Line(path.getLast().getX(), path.getLast().getY(), position.getX(), position.getY());
+        drawingLayer.add(line);
         path.add(position);
-
-        canvas.add(newLine);
-
-    }
-    /**
-     * This method monitors the on released function of the mouse, matches template and sets name and score 
-     * @param event
-     */
-    public void mouseReleased(MouseButtonEvent event){
-        HashMap<String, Double> stringName = recognizer.bestTemplate(path);
-        String key = "";
-        double dequeValue = 0; 
-        for(Entry<String, Double> templateElement: stringName.entrySet()){
-            key = templateElement.getKey();
-            dequeValue = templateElement.getValue(); 
-        }
-        matchLabel.setText("Match: " + key + " " + dequeValue);
-
-    }
-
-    /**
-     * Clears the canvas, but preserves all the UI objects
-     */
-    private void removeAllNonUIGraphicsObjects() {
-        canvas.removeAll();
-        canvas.add(matchLabel);
-        canvas.add(uiGroup);
     }
 
     /**
@@ -128,14 +93,12 @@ public class GestureApp {
      * with the name from the templateNameField textbox. If no text has been entered then the template is named with "no name gesture"
      */
     private void addTemplate() {
-        String name = templateNameField.getText(); 
+        String name = templateNameField.getText();
         if (name.isEmpty()){
             name = "no name gesture";
         }
-        if(path.size() > 0){
-            recognizer.addTemplate(name, path); // Add the points stored in the path as a template
-        }  
-        removeAllNonUIGraphicsObjects();
+        recognizer.addTemplate(name, path); // Add the points stored in the path as a template
+
     }
 
     /**
@@ -152,7 +115,7 @@ public class GestureApp {
             Deque<Point> points = ioManager.loadGesture(name+".xml");
             if (points != null){
                 recognizer.addTemplate(name, points);
-                System.out.println("Loaded "+ name);
+                System.out.println("Loaded "+name);
             }
         }
         else if (ch.equals('s')){
@@ -166,6 +129,6 @@ public class GestureApp {
     }
 
     public static void main(String[] args){
-        GestureApp window = new GestureApp();
+        new GestureApp();
     }
 }

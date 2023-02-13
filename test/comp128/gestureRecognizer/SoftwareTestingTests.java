@@ -38,9 +38,9 @@ public class SoftwareTestingTests {
         recognizer.addTemplate("test1", originalPoints);
         recognizer.addTemplate("test2", originalPoints);
 
-        assertTrue(recognizer.getTemplateList().containsKey("test1"));
-        assertTrue(recognizer.getTemplateList().containsKey("test2"));
-        assertFalse(recognizer.getTemplateList().containsKey("not a template"));
+        assertTrue(recognizer.getTemplates().contains("test1"));
+        assertTrue(recognizer.getTemplates().contains("test2"));
+        assertFalse(recognizer.getTemplates().contains("not a template"));
     }
 
     /**
