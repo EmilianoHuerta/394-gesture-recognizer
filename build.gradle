@@ -9,7 +9,9 @@ repositories {
 
 dependencies {
     implementation group: 'com.github.mac-comp127', name: 'kilt-graphics', version: '1.1.1'
+    testImplementation 'org.mockito:mockito-testng:0.4.30'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.6.+'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
 }
 
 test {
