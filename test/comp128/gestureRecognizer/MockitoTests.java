@@ -10,6 +10,8 @@ import static org.mockito.Mockito.verify;
 
 public class MockitoTests {
 
+    GestureApp gestureApp = mock(GestureApp.class);
+
     @Test
     void onMouseDown() {
 
