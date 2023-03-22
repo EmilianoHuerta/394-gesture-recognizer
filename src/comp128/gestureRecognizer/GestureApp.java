@@ -14,15 +14,15 @@ import java.util.function.Consumer;
  */
 public class GestureApp {
 
-    private CanvasWindow canvas;
-    private Recognizer recognizer;
-    private IOManager ioManager;
-    private GraphicsGroup uiGroup;
-    private Button addTemplateButton;
-    private TextField templateNameField;
-    private GraphicsText matchLabel;
-    private Deque<Point> path;
-    private GraphicsGroup drawingLayer;
+    public CanvasWindow canvas;
+    public Recognizer recognizer;
+    public IOManager ioManager;
+    public GraphicsGroup uiGroup;
+    public Button addTemplateButton;
+    public TextField templateNameField;
+    public GraphicsText matchLabel;
+    public Deque<Point> path;
+    public GraphicsGroup drawingLayer;
 
     public GestureApp(){
         canvas = new CanvasWindow("Gesture Recognizer", 600, 600);
@@ -50,8 +50,7 @@ public class GestureApp {
         addTemplateButton.onClick( () -> addTemplate() );
 
         Point center = canvas.getCenter();
-        System.out.println(center);
-
+        
         double fieldWidthWithMargin = templateNameField.getSize().getX() + 5;
         double totalWidth = fieldWidthWithMargin + addTemplateButton.getSize().getX();
 
@@ -95,7 +94,7 @@ public class GestureApp {
      * Handle what happens when the add template button is pressed. This method adds the points stored in path as a template
      * with the name from the templateNameField textbox. If no text has been entered then the template is named with "no name gesture"
      */
-    private void addTemplate() {
+    public void addTemplate() {
         String name = templateNameField.getText();
         if (name.isEmpty()){
             name = "no name gesture";
@@ -130,6 +129,10 @@ public class GestureApp {
             ioManager.saveGesture(path, name, name+".xml");
             System.out.println("Saved "+name);
         }
+    }
+
+    public CanvasWindow getCanvas() {
+        return canvas;
     }
 
     public static void main(String[] args){

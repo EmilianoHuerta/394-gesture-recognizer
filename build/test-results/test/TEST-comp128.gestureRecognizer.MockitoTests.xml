@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="comp128.gestureRecognizer.MockitoTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-03-20T17:46:19" hostname="DESKTOP-9T3CTOP" time="0.12">
+  <properties/>
+  <testcase name="mockitoExperiment()" classname="comp128.gestureRecognizer.MockitoTests" time="0.12"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
