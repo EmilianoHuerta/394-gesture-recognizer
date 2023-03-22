@@ -50,6 +50,8 @@ public class GestureApp {
         addTemplateButton.onClick( () -> addTemplate() );
 
         Point center = canvas.getCenter();
+        System.out.println(center);
+
         double fieldWidthWithMargin = templateNameField.getSize().getX() + 5;
         double totalWidth = fieldWidthWithMargin + addTemplateButton.getSize().getX();
 
@@ -80,6 +82,7 @@ public class GestureApp {
                 matchLabel.setText("Match: " + bestMatch.toString());
             }
         });
+
     }
 
     private void draw(Point position){
@@ -98,8 +101,9 @@ public class GestureApp {
             name = "no name gesture";
         }
         recognizer.addTemplate(name, path); // Add the points stored in the path as a template
-
+        drawingLayer.removeAll();
     }
+
 
     /**
      * Handles keyboard commands used to save and load gestures for debugging and to write tests.
